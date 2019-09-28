@@ -1,0 +1,151 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ac="clr-namespace:Helpers.CustomControls.Select2;assembly=Helpers">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Colors.xaml" />
+        <ResourceDictionary Source="TextBoxes.xaml" />
+        <ResourceDictionary Source="InputControls.xaml" />
+        <ResourceDictionary Source="ListBox.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+    <Style x:Key="Select2Style" TargetType="ac:AutoCompleteTextBox" >
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Margin" Value="{StaticResource InputControlMargin}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ac:AutoCompleteTextBox}">
+                    <DockPanel x:Name="PART_ParentContainer">
+                        <TextBox 
+                            x:Name="PART_Select2" 
+                            DockPanel.Dock="Top"
+                            IsReadOnly="True"
+                            HorizontalAlignment="Stretch"
+                            IsTabStop="False"
+                            TabIndex="{TemplateBinding TabIndex}"
+                            >
+                            <TextBox.Template>
+                                <ControlTemplate TargetType="{x:Type TextBox}">
+                                    <Grid>
+                                        <TextBox Text="{TemplateBinding Text}" x:Name="Select2TextBox" IsTabStop="False" TabIndex="{TemplateBinding TabIndex}" IsReadOnly="True" Focusable="True" Style="{StaticResource TextBoxesCustomStyle}" Margin="0"/>
+                                        <!--<Path  x:Name="Select2UpArrow" Fill="Black" Data="M 0 6 L 12 6 L 6 0 Z" Margin="0,2,5,0" Width="15"  Height="15" HorizontalAlignment="Right" VerticalAlignment="Center" Visibility="Collapsed"/>-->
+                                        <Path x:Name="Select2DownArrow" Fill="Black" Data="M 0 0 L 6 6 L 12 0 Z" Margin="0,8,8,0" Width="15"  Height="15" HorizontalAlignment="Right" VerticalAlignment="Center" Visibility="Visible"/>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsFocused" Value="True">
+                                            <Setter TargetName="Select2TextBox" Property="FocusManager.FocusedElement" Value="{Binding ElementName=Select2TextBox}" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </TextBox.Template>
+                        </TextBox>
+                        <StackPanel DockPanel.Dock="Bottom" x:Name="PART_SuggestionBoxContainer" HorizontalAlignment="Stretch">
+                            <DockPanel HorizontalAlignment="Stretch">
+                                <ContentPresenter ContentSource="Icon"
+                                                  x:Name="PART_Icon"
+                                                  Visibility="{TemplateBinding IconVisibility}" />
+                                <Border x:Name="border" Background="White" Padding="8,4" Margin="2,0" BorderThickness="{StaticResource InputControlBorderThickness}" BorderBrush="{StaticResource Brushes.DarkShade}" CornerRadius="{StaticResource BorderCornerRadius}" SnapsToDevicePixels="True">
+                                    <Grid Height="20">
+                                        <TextBlock x:Name="PART_Watermark"
+                                               Text="{TemplateBinding Watermark}"
+                                               Visibility="Collapsed"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Left"
+                                               Focusable="False"
+                                               Foreground="Gray"
+                                               Margin="3,0" />
+                                        <TextBox x:Name="PART_Editor"
+                                             Focusable="True"
+                                             BorderThickness="0"
+                                             HorizontalAlignment="Stretch"
+                                             VerticalAlignment="Center"
+                                             MaxLength="{Binding Path=MaxLength, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=TwoWay}"
+                                             CharacterCasing="{Binding Path=CharacterCasing, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=TwoWay}"
+                                             Text="{Binding Path=Text, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=TwoWay}">
+                                            <TextBox.Template>
+                                                <ControlTemplate TargetType="{x:Type TextBox}">
+                                                    <Grid Background="Transparent">
+                                                        <TextBox BorderThickness="0" Background="Transparent" x:Name="SearchTextBox"
+                                                                 Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                 />
+                                                        <Image Height="15" Width="15" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0"  Source="/CPOSApplication.Theme;component/Resources/Images/Search/search.png" />
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsFocused" Value="True">
+                                                            <Setter TargetName="SearchTextBox" Property="FocusManager.FocusedElement" Value="{Binding ElementName=SearchTextBox}" />
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+
+                                            </TextBox.Template>
+                                        </TextBox>
+                                        <!--Style="{StaticResource ResourceKey=MaterialDesignTextBox}"-->
+                                    </Grid>
+                                </Border>
+                            </DockPanel>
+                            <Popup
+                                x:Name="PART_Popup"
+                                   IsOpen="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource Mode=TemplatedParent},Mode=TwoWay}"
+                                   Width="{TemplateBinding ActualWidth}"
+                                   HorizontalOffset="0"
+                                   MinHeight="25"
+                                   MaxHeight="600"
+                                   AllowsTransparency="True"
+                                   PopupAnimation="Slide"
+                                   Focusable="False">
+                                <Border Background="White"
+                                        BorderThickness="1"
+                                        BorderBrush="Gray"
+                                        CornerRadius="5"
+                                        Padding="2"
+                                        >
+                                    <Grid>
+                                        <ListBox x:Name="PART_Selector"
+                                                 ItemTemplate="{TemplateBinding ItemTemplate}"
+                                                 ItemTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                                 Focusable="False"
+                                                 BorderThickness="0"
+                                                 MaxHeight="{Binding Path=MaxPopupHeight, RelativeSource={RelativeSource Mode=TemplatedParent},Mode=TwoWay}"
+                                                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                 Style="{StaticResource ListBoxCustomStyle}"
+                                                >
+                                        </ListBox>
+                                        <Border Visibility="{Binding Path=IsLoading, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource   ResourceKey=BoolToVisConverter}}">
+                                            <ContentPresenter ContentSource="LoadingContent"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Popup>
+                        </StackPanel>
+                    </DockPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Text"
+                                 Value=""
+                                 SourceName="PART_Editor">
+                            <Setter Property="Visibility"
+                                    Value="Visible"
+                                    TargetName="PART_Watermark" />
+                        </Trigger>
+                        <Trigger Property="IconPlacement"
+                                 Value="Left">
+                            <Setter Property="DockPanel.Dock"
+                                    Value="Left"
+                                    TargetName="PART_Icon" />
+                        </Trigger>
+                        <Trigger Property="IconPlacement"
+                                 Value="Right">
+                            <Setter Property="DockPanel.Dock"
+                                    Value="Right"
+                                    TargetName="PART_Icon" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="PART_Select2" Property="FocusManager.FocusedElement" Value="{Binding ElementName=PART_Select2}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

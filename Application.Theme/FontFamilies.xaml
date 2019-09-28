@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <FontFamily x:Key="LatoFont">Lato</FontFamily>
+    <FontFamily x:Key="HelveticaFont">Helvetica</FontFamily>
+    <FontFamily x:Key="DefaultInputLabelFont">Roboto</FontFamily>
+    <FontFamily x:Key="DefaultTextBoxFont">Roboto</FontFamily>
+    <FontFamily x:Key="ArialFont">Arial</FontFamily>
+    <FontFamily x:Key="ComicSansFont">Comic Sans MS</FontFamily>
+    <FontFamily x:Key="CambriaFont">Cambria</FontFamily>
+</ResourceDictionary>

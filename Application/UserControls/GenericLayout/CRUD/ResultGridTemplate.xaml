@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="DesktopApplication.UserControls.GenericLayout.CRUD.ResultGridTemplate"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             xmlns:local="clr-namespace:Helpers.Windows.Convertors;assembly=Helpers.Windows"
+             xmlns:PaginationControl="clr-namespace:DesktopApplication.GeneralControl.PaginationControl"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:DataGridRowToIndexConvertor x:Key="RowToIndexConvertor"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="6*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <ContentPresenter  Grid.Row="1" Content="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=ResultDataGrid}" />
+        <PaginationControl:MVVMPaginator Background="#e4e4e4" x:Name="pager" PaginationText="{Binding PaginationText,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" SelectedPageIndex="{Binding SelectedPageIndex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" PageList="{Binding PageList,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" VerticalAlignment="Bottom"  Margin="0,10,0,0"  Height="30" />
+    </Grid>
+</UserControl>
