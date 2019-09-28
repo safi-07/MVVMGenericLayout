@@ -60,7 +60,7 @@ namespace DesktopApplication.ViewModels.Branch
         {
             Filters = new BranchSearchViewModel();
             Items = new SearchResultModel<BranchModel>();
-            //SearchCommand.Execute(null);
+            SearchCommand.Execute(null);
 
         }
         #endregion
