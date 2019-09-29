@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <local:FilterLayoutTemplate MinWidth="300">
         <local:FilterLayoutTemplate.FilterPanelContent>
-            <Grid DataContext="{Binding Filters}">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -19,7 +19,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Row="1" Grid.Column="0" Content="Name"/>
-                <TextBox Grid.Row="2" Grid.ColumnSpan="2" MaxLength="50" Text="{Binding Name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource SearchTextBoxesCustomStyle}"/>
+                <TextBox Grid.Row="2" Grid.ColumnSpan="2" MaxLength="50" Text="{Binding Filters.Name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource SearchTextBoxesCustomStyle}"/>
             </Grid>
         </local:FilterLayoutTemplate.FilterPanelContent>
     </local:FilterLayoutTemplate>
